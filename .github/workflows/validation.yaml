@@ -38,7 +38,7 @@ jobs:
         run: |
           docker run -d -p 9000:9000 -p 9001:9001 \
           -e "MINIO_ROOT_USER=admin" \
-          -e "MINIO_ROOT_PASSWORD=supersecreto" \
+          -e "MINIO_ROOT_PASSWORD=admin123" \
           --name minio \
           minio/minio server /data --console-address ":9001"
 
@@ -75,7 +75,7 @@ jobs:
           chmod +x mc
           sudo mv mc /usr/local/bin/
 
-          mc alias set local http://127.0.0.1:9000 admin supersecreto
+          mc alias set local http://127.0.0.1:9000 admin admin123
           mc mb local/news-images || true
           mc anonymous set public local/news-images
 
