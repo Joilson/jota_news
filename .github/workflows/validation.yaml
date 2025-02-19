@@ -45,11 +45,31 @@ jobs:
           --health-interval 10s
           --health-retries 5
           --health-timeout 5s
-        command: server /data --console-address ":9001"
 
     steps:
-      - name: Testar se o MinIO iniciou corretamente
-        run: curl -s http://localhost:9000/minio/health/live
+      - name: Iniciar MinIO
+        run: |
+          docker run -d -p 9000:9000 -p 9001:9001 \
+          -e "MINIO_ROOT_USER=admin" \
+          -e "MINIO_ROOT_PASSWORD=supersecreto" \
+          --name minio \
+          minio/minio server /data --console-address ":9001"
+
+          - name: Aguardar MinIO iniciar
+            run: |
+              for i in {1..10}; do
+                if curl -s http://localhost:9000/minio/health/live; then
+                  echo "MinIO está pronto!"
+                  exit 0
+                fi
+                echo "Aguardando MinIO iniciar..."
+                sleep 3
+              done
+              echo "Erro: MinIO não iniciou a tempo" >&2
+              exit 1
+
+            - name: Testar conexão com MinIO
+              run: curl -s http://localhost:9000/minio/health/live
 
       - name: Debug MinIO Container
         run: docker logs minio
