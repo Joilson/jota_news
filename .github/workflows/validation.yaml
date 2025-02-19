@@ -1,0 +1,64 @@
+name: CI - Validation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-application:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: jota_news
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root --password=root"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependências
+        run: |
+          pip install --upgrade pip
+          pip install -r .docker/web/requirements.txt
+
+      - name: Configurar banco de dados
+        env:
+          DATABASE_URL: mysql://root:root@127.0.0.1:3306/jota_news
+          DJANGO_DB_ENGINE: django.db.backends.mysql
+          DJANGO_DB_NAME: jota_news
+          DJANGO_DB_USER: root
+          DJANGO_DB_PASSWORD: root
+          DJANGO_DB_HOST: 127.0.0.1
+          DJANGO_DB_PORT: 3306
+        run: |
+          python manage.py migrate
+
+      - name: Rodar testes API de users
+        env:
+          DATABASE_URL: postgres://django:django@localhost:5432/test_db
+        run: |
+          python manage.py users.tests.api
+
+      - name: Rodar testes API de news
+        env:
+          DATABASE_URL: postgres://django:django@localhost:5432/test_db
+        run: |
+          python manage.py news.tests.api
