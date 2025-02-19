@@ -18,7 +18,7 @@ jobs:
       DJANGO_DB_HOST: 127.0.0.1
       DJANGO_DB_PORT: 3306
       FILE_STORAGE_ENDPOINT_URL: http://127.0.0.1:9000
-      RABBIT_HOST: ${{ secrets.RABBIT_HOST }}
+      RABBIT_HOST: amqp://guest:guest@rabbitmq:5672
 
     services:
       mysql:
@@ -34,12 +34,16 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-    steps:
-      - name: Debug RABBIT_HOST
-        run: |
-          echo "::add-mask::${{ secrets.RABBIT_HOST }}"  # Oculta a variável no log
-          echo "RABBIT_HOST=${{ secrets.RABBIT_HOST }}"
+      rabbitmq:
+        image: rabbitmq:3-management
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+        ports:
+          - 5672:5672
+          - 15672:15672
 
+    steps:
       - name: Iniciar MinIO
         run: |
           docker run -d -p 9000:9000 -p 9001:9001 \
