@@ -69,7 +69,6 @@ class NewsViewSetTests(APITestCase):
             "subtitle": "news",
             "content": "asdasdasd",
             "status": "publication",
-            "visibility": "public",
             "verticals": 1,
             "image": self.generate_image()
         }
@@ -85,7 +84,6 @@ class NewsViewSetTests(APITestCase):
             "subtitle": "news",
             "content": "asdasdasd",
             "status": "publication",
-            "visibility": "public",
             "verticals": 1,
             "image": self.generate_image()
         }
@@ -100,7 +98,6 @@ class NewsViewSetTests(APITestCase):
         assert response.data["title"] == "First"
         assert response.data["subtitle"] == "news"
         assert response.data["status"] == "publication"
-        assert response.data["visibility"] == "public"
 
     def test_schedule_news(self):
         new_scheduled_date = make_aware(datetime.now() + timedelta(days=5))
