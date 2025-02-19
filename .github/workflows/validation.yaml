@@ -35,18 +35,22 @@ jobs:
 
       minio:
         image: minio/minio
+        ports:
+          - 9000:9000
         env:
           MINIO_ROOT_USER: admin
-          MINIO_ROOT_PASSWORD: admin123
-        ports:
-          - 9000:9000  # API S3
+          MINIO_ROOT_PASSWORD: supersecreto
         options: >-
-          --health-cmd="curl -f http://localhost:9000/minio/health/live || exit 1"
-          --health-interval=5s
-          --health-timeout=10s
-          --health-retries=5
+          --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
+          --health-interval 10s
+          --health-retries 5
+          --health-timeout 5s
+        command: server /data --console-address ":9001"
 
     steps:
+      - name: Testar se o MinIO iniciou corretamente
+        run: curl -s http://localhost:9000/minio/health/live
+
       - name: Debug MinIO Container
         run: docker logs minio
 
