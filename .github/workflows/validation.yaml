@@ -18,6 +18,7 @@ jobs:
       DJANGO_DB_HOST: 127.0.0.1
       DJANGO_DB_PORT: 3306
       FILE_STORAGE_ENDPOINT_URL: http://127.0.0.1:9000
+      RABBIT_HOST: amqps://fbgzrkop:1K1hfqMAtnYNmhsSGYSjt_v8eOkq8cqu@leopard:lmq:cloudamqp:com/fbgzrkop
 
     services:
       mysql:
