@@ -23,7 +23,6 @@ class News(models.Model):
     published_at = models.DateTimeField(auto_now_add=True)
     scheduled_to = models.DateTimeField(auto_now_add=False, null=True)
     status = models.CharField(max_length=20, choices=NewsStatus.choices)
-    visibility = models.CharField(max_length=20, choices=NewsVisibility.choices)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     verticals = models.ManyToManyField(Vertical, related_name="verticals")
 

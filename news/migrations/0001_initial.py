@@ -26,7 +26,6 @@ class Migration(migrations.Migration):
                 ('published_at', models.DateTimeField(auto_now_add=True)),
                 ('scheduled_to', models.DateTimeField(auto_now_add=False, null=True)),
                 ('status', models.CharField(choices=[('draft', 'Rascunho'), ('publication', 'Publicação')], max_length=20)),
-                ('visibility', models.CharField(choices=[('public', 'Publica'), ('pro', 'Pró')], max_length=20)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('verticals', models.ManyToManyField(related_name='verticals', to='users.vertical')),
             ],
