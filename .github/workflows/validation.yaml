@@ -33,19 +33,6 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-      minio:
-        image: minio/minio
-        ports:
-          - 9000:9000
-        env:
-          MINIO_ROOT_USER: admin
-          MINIO_ROOT_PASSWORD: supersecreto
-        options: >-
-          --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
-          --health-interval 10s
-          --health-retries 5
-          --health-timeout 5s
-
     steps:
       - name: Iniciar MinIO
         run: |
