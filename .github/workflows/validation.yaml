@@ -44,6 +44,17 @@ jobs:
           - 15672:15672
 
     steps:
+      - name: Aguardar RabbitMQ ficar pronto
+        run: |
+          echo "Aguardando RabbitMQ..."
+          for i in {1..10}; do
+            nc -z rabbitmq 5672 && echo "RabbitMQ está pronto!" && exit 0
+            echo "Aguardando RabbitMQ... Tentativa $i"
+            sleep 5
+          done
+          echo "RabbitMQ não respondeu a tempo!" && exit 1
+      
+
       - name: Iniciar MinIO
         run: |
           docker run -d -p 9000:9000 -p 9001:9001 \
