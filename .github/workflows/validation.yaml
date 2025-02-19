@@ -75,7 +75,7 @@ jobs:
           chmod +x mc
           sudo mv mc /usr/local/bin/
 
-          mc alias set local http://127.0.0.1:9000 admin admin123
+          mc alias set local http://127.0.0.1:9000 admin supersecreto
           mc mb local/news-images || true
           mc anonymous set public local/news-images
 
