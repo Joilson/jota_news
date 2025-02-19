@@ -35,6 +35,11 @@ jobs:
           --health-retries=5
 
     steps:
+      - name: Debug RABBIT_HOST
+        run: |
+          echo "::add-mask::${{ secrets.RABBIT_HOST }}"  # Oculta a variável no log
+          echo "RABBIT_HOST=${{ secrets.RABBIT_HOST }}"
+
       - name: Iniciar MinIO
         run: |
           docker run -d -p 9000:9000 -p 9001:9001 \
