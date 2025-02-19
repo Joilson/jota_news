@@ -53,10 +53,10 @@ jobs:
         env:
           DATABASE_URL: postgres://django:django@localhost:5432/test_db
         run: |
-          python manage.py users.tests.api
+          python manage.py test users.tests.api
 
       - name: Rodar testes API de news
         env:
           DATABASE_URL: postgres://django:django@localhost:5432/test_db
         run: |
-          python manage.py news.tests.api
+          python manage.py test news.tests.api
