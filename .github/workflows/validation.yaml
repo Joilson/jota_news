@@ -53,7 +53,7 @@ jobs:
             sleep 5
           done
           echo "RabbitMQ não respondeu a tempo!" && exit 1
-      
+
 
       - name: Iniciar MinIO
         run: |
@@ -124,3 +124,11 @@ jobs:
       - name: Rodar Pylint em news
         run: |
           pylint news/ --disable=C0114,C0115,C0116,R0903
+
+      - name: Rodar Mypy em users
+        run: |
+          mypy users
+
+      - name: Rodar Mypy em news
+        run: |
+          mypy news
