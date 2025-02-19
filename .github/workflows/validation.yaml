@@ -34,13 +34,12 @@ jobs:
           --health-retries=5
 
       minio:
-        image: quay.io/minio/minio
+        image: minio/minio
         env:
           MINIO_ROOT_USER: admin
           MINIO_ROOT_PASSWORD: admin123
         ports:
           - 9000:9000  # API S3
-          - 9001:9001  # Console Web
         options: >-
           --health-cmd="curl -f http://localhost:9000/minio/health/live || exit 1"
           --health-interval=5s
@@ -48,6 +47,9 @@ jobs:
           --health-retries=5
 
     steps:
+      - name: Debug MinIO Container
+        run: docker logs minio
+
       - name: Checkout do código
         uses: actions/checkout@v4
 
