@@ -9,6 +9,15 @@ jobs:
   test-application:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: mysql://root:root@127.0.0.1:3306/jota_news
+      DJANGO_DB_ENGINE: django.db.backends.mysql
+      DJANGO_DB_NAME: jota_news
+      DJANGO_DB_USER: root
+      DJANGO_DB_PASSWORD: root
+      DJANGO_DB_HOST: 127.0.0.1
+      DJANGO_DB_PORT: 3306
+
     services:
       mysql:
         image: mysql:8
@@ -38,25 +47,17 @@ jobs:
           pip install -r .docker/web/requirements.txt
 
       - name: Configurar banco de dados
-        env:
-          DATABASE_URL: mysql://root:root@127.0.0.1:3306/jota_news
-          DJANGO_DB_ENGINE: django.db.backends.mysql
-          DJANGO_DB_NAME: jota_news
-          DJANGO_DB_USER: root
-          DJANGO_DB_PASSWORD: root
-          DJANGO_DB_HOST: 127.0.0.1
-          DJANGO_DB_PORT: 3306
         run: |
           python manage.py migrate
 
       - name: Rodar testes API de users
         env:
-          DATABASE_URL: postgres://django:django@localhost:5432/test_db
+          DATABASE_URL: postgres://django:django@localhost:5432/jota_news
         run: |
           python manage.py test users.tests.api
 
       - name: Rodar testes API de news
         env:
-          DATABASE_URL: postgres://django:django@localhost:5432/test_db
+          DATABASE_URL: postgres://django:django@localhost:5432/jota_news
         run: |
           python manage.py test news.tests.api
