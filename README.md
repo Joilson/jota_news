@@ -53,3 +53,4 @@ Microsserviços:
     docker compose exec web python manage.py migrate
 ```
 
+Github actions: https://github.com/Joilson/jota_news/actions/workflows/validation.yaml
