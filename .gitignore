@@ -1,0 +1,4 @@
+uploads/*
+
+.docker/minio_data
+.docker/mysql_data

@@ -1,0 +1,78 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_DATABASE: jota_news
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - jota_news
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build: ./.docker/web
+    container_name: web
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy  # Aguarda até o MySQL estar pronto
+    environment:
+      DATABASE_URL: mysql://app:root@db:3306/jota_news
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    networks:
+      - jota_news
+
+  # Servidor de arquivos local (similar ao s3)
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"  # API S3
+      - "9001:9001"  # Console Web
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    command: server /data --console-address ":9001"
+    volumes:
+      - .docker/minio_data:/data
+    networks:
+      - jota_news
+
+  # Configura o bucket utilizado pelo sistema
+  minio-setup:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 admin admin123; do
+        echo 'Aguardando MinIO...';
+        sleep 5;
+      done;
+      mc anonymous set public local/news-images;
+      exit 0;
+      "
+    networks:
+      - jota_news
+
+volumes:
+  mysql_data:
+  minio_data:
+
+networks:
+  jota_news:

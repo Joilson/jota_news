@@ -1,0 +1,13 @@
+Django
+djangorestframework
+mysqlclient
+dj-database-url
+drf-spectacular
+djangorestframework-simplejwt
+Pillow
+django-storages
+boto3
+pylint
+pylint-django
+mypy
+pika
