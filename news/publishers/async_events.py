@@ -4,7 +4,7 @@ import pika
 from django.conf import settings
 
 
-def send_to_exchange(data):
+def send_to_other_projects(data):
     """ Dispatch msg for all projects listen this exchange """
     connection = pika.BlockingConnection(pika.URLParameters(settings.RABBIT_HOST))
     channel = connection.channel()

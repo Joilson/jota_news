@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.forms import model_to_dict
 
 from .models.news import News
-from .publishers.async_events import send_to_exchange
+from .publishers.async_events import send_to_other_projects
 
 
 @receiver(post_save, sender=News)
@@ -20,4 +20,4 @@ def news_was_created(sender, instance, created, **kwargs):  # pylint: disable=un
         {"id": v.id, "name": v.name} for v in instance.verticals.all()
     ]
 
-    send_to_exchange({"type": "news.created", 'body': body})
+    send_to_other_projects({"type": "news.created", 'body': body})
