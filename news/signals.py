@@ -18,6 +18,6 @@ def news_was_created(sender, instance, created, **kwargs):  # pylint: disable=un
 
     body['verticals'] = [
         {"id": v.id, "name": v.name} for v in instance.verticals.all()
-    ],
+    ]
 
     send_to_exchange({"type": "news.created", 'body': body})

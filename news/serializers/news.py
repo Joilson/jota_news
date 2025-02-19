@@ -22,8 +22,8 @@ class NewsSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         return f"{settings.FILE_STORAGE_URL}{obj.image.url}"
 
-    def validate(self, data):
+    def validate(self, attrs):
         request = self.context.get('request')
         if request and hasattr(request, "user"):
-            data["author"] = request.user
-        return data
+            attrs["author"] = request.user
+        return attrs

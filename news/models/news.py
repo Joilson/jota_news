@@ -1,7 +1,7 @@
 from django.db import models
 
-from users.models.user import User
 from news.services.files import NewsImage
+from users.models.user import User
 from users.models.vertical import Vertical
 
 

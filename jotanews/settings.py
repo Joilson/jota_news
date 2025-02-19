@@ -13,7 +13,12 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-CELERY_BROKER_URL = 'amqps://fbgzrkop:1K1hfqMAtnYNmhsSGYSjt_v8eOkq8cqu@leopard.lmq.cloudamqp.com/fbgzrkop'
+from dotenv import load_dotenv
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+dotenv_path = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -64,7 +69,7 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 FILE_STORAGE_ACCESS_KEY_ID = "admin"
 FILE_STORAGE_SECRET_ACCESS_KEY = "admin123"
 FILE_STORAGE_BUCKET_NAME = "news-images"
-FILE_STORAGE_ENDPOINT_URL = os.getenv('FILE_STORAGE_ENDPOINT_URL', '"http://minio:9000"')
+FILE_STORAGE_ENDPOINT_URL = os.getenv('FILE_STORAGE_ENDPOINT_URL', 'http://minio:9000')
 FILE_STORAGE_URL = f"http://127.0.0.1:9000/{FILE_STORAGE_BUCKET_NAME}"
 
 SIMPLE_JWT = {

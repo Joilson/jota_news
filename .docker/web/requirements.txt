@@ -11,3 +11,4 @@ pylint
 pylint-django
 mypy
 pika
+python-dotenv

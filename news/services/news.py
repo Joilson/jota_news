@@ -9,8 +9,8 @@ class NewsService:
         return NewsRepository.get_all()
 
     @staticmethod
-    def get(id):
-        return NewsRepository.get_by_id(id)
+    def get(entity_id):
+        return NewsRepository.get_by_id(entity_id)
 
     @staticmethod
     def create(data):

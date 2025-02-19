@@ -10,7 +10,7 @@ from news.services.news import NewsService
 from news.views.permissions import IsEditorUser, IsReaderUser
 
 
-class NewsViewSet(viewsets.ModelViewSet):
+class NewsViewSet(viewsets.ModelViewSet):  # pylint: disable=too-many-ancestors
     serializer_class = NewsSerializer
     http_method_names = ['get', 'post', 'put', 'delete', 'patch']
     authentication_classes = [JWTAuthentication]
@@ -36,7 +36,7 @@ class NewsViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs):
         news = self.get_object()
         if news:
             serializer = self.get_serializer(news)
@@ -51,7 +51,7 @@ class NewsViewSet(viewsets.ModelViewSet):
             return Response(self.get_serializer(new).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request, pk=None, *args, **kwargs):
+    def update(self, request, *args, **kwargs):
         news = self.get_object()
 
         serializer = self.get_serializer(news, data=request.data, partial=False)
@@ -61,7 +61,7 @@ class NewsViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def partial_update(self, request, pk=None, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         news = self.get_object()
         serializer = self.get_serializer(news, data=request.data, partial=True)
         if serializer.is_valid():
@@ -70,7 +70,7 @@ class NewsViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def destroy(self, request, pk=None, *args, **kwargs):
+    def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
 
         NewsService.delete(instance)

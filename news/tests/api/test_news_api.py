@@ -104,7 +104,11 @@ class NewsViewSetTests(APITestCase):
 
     def test_schedule_news(self):
         new_scheduled_date = make_aware(datetime.now() + timedelta(days=5))
-        response = self.client.patch(f"{self.url}{self.news.id}/", {"scheduled_to": new_scheduled_date}, format="json")
+        response = self.client.patch(
+            f"{self.url}{self.news.id}/",
+            {"scheduled_to": new_scheduled_date},
+            format="json"
+        )
 
         assert response.status_code == status.HTTP_200_OK
 

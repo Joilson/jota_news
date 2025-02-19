@@ -89,13 +89,17 @@ jobs:
           python manage.py migrate
 
       - name: Rodar testes API de users
-        env:
-          DATABASE_URL: postgres://django:django@localhost:5432/jota_news
         run: |
           python manage.py test users.tests.api
 
       - name: Rodar testes API de news
-        env:
-          DATABASE_URL: postgres://django:django@localhost:5432/jota_news
         run: |
           python manage.py test news.tests.api
+
+      - name: Rodar Pylint em users
+        run: |
+          pylint users/ --disable=C0114,C0115,C0116,R0903
+
+      - name: Rodar Pylint em news
+        run: |
+          pylint news/ --disable=C0114,C0115,C0116,R0903

@@ -35,7 +35,6 @@ class NewsRepository:
 
         entity.verticals.set(verticals)
         entity.save()
-        
         return entity
 
     @staticmethod
