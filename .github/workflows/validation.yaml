@@ -18,7 +18,7 @@ jobs:
       DJANGO_DB_HOST: 127.0.0.1
       DJANGO_DB_PORT: 3306
       FILE_STORAGE_ENDPOINT_URL: http://127.0.0.1:9000
-      RABBIT_HOST: amqp://guest:guest@rabbitmq:5672
+      RABBIT_HOST: amqp://guest:guest@localhost:5672
 
     services:
       mysql:
@@ -48,7 +48,7 @@ jobs:
         run: |
           echo "Aguardando RabbitMQ..."
           for i in {1..10}; do
-            nc -z rabbitmq 5672 && echo "RabbitMQ está pronto!" && exit 0
+            nc -z localhost 5672 && echo "RabbitMQ está pronto!" && exit 0
             echo "Aguardando RabbitMQ... Tentativa $i"
             sleep 5
           done
