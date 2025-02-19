@@ -72,6 +72,8 @@ FILE_STORAGE_BUCKET_NAME = "news-images"
 FILE_STORAGE_ENDPOINT_URL = os.getenv('FILE_STORAGE_ENDPOINT_URL', 'http://minio:9000')
 FILE_STORAGE_URL = f"http://127.0.0.1:9000/{FILE_STORAGE_BUCKET_NAME}"
 
+RABBIT_HOST = os.getenv('RABBIT_HOST', 'amqp://guest:guest@rabbitmq:5672')
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
